@@ -134,29 +134,67 @@ footer{border-top:1px solid #1e5c91;background:#060b17;text-align:center;padding
 <article class="project"><div class="project-art">▧ &nbsp; Photo coming soon</div><div class="project-body"><div class="tagrow"><span class="tag">Smart Home</span><span class="status progress">In Progress</span></div><h3>Smart Home Lighting Automation</h3><p>ESP32-based smart lighting system with scene control, scheduling, and voice-assistant integration for residential installations.</p><div class="spec">Platform: ESP32, home automation protocol, MQTT devices, relay module, sensors</div></div></article>
 </div><div class="card" style="margin-top:22px;min-height:0;text-align:center"><p>Project photographs and detailed documentation will be added as work is completed and documented.</p></div></div></section>
 <section class="section" id="contact"><div class="wrap"><div class="eyebrow">Contact</div><h2 style="font-size:clamp(34px,5vw,48px)">Start a conversation.</h2><div class="section-intro" style="margin:0 0 45px">Have a project or enquiry? Fill in the form and we'll get back to you.</div><div class="contact-grid"><div class="contact-info"><div class="email"><div class="ico">✉</div><div><small>EMAIL</small><strong>voltoraofficial11@gmail.com</strong></div></div><div style="letter-spacing:1px;font-size:12px">ENQUIRY TYPES</div><ul class="enquiries"><li>Electrical Panel Work</li><li>Motor Control</li><li>Power Distribution</li><li>Residential Wiring</li><li>Commercial Wiring</li><li>PLC &amp; Automation</li><li>IoT &amp; Smart Home</li><li>Other Enquiries</li></ul></div>
-<form id="voltora-contact-form" action="https://formsubmit.co/voltoraofficial11@gmail.com" method="POST">
-<input type="hidden" name="_subject" id="voltora-email-subject" value="New website enquiry | VOLTORA">
+<form id="voltora-contact-form" action="https://formsubmit.co/ajax/voltoraofficial11@gmail.com" method="POST">
+<input type="hidden" name="_subject" id="voltora-email-subject" value="New Customer Enquiry | VOLTORA">
 <input type="hidden" name="_template" value="table">
 <input type="hidden" name="_captcha" value="false">
 <input type="hidden" name="_replyto" id="voltora-reply-to" value="">
-<input type="hidden" name="_autoresponse" value="Thank you for contacting VOLTORA. We have received your enquiry successfully. Our team will review your message and get back to you as soon as possible. | VOLTORA – Technology with Purpose">
 <label for="name">NAME</label><input id="name" name="Customer Name" placeholder="Your name" autocomplete="name" required>
-<label for="email">EMAIL</label><input id="email" name="email" type="email" placeholder="your@email.com" autocomplete="email" required>
+<label for="email">EMAIL</label><input id="email" name="Customer Email" type="email" placeholder="your@email.com" autocomplete="email" required>
 <label for="phone">PHONE NUMBER (OPTIONAL)</label><input id="phone" name="Phone Number" type="tel" placeholder="+91 12345 67890" autocomplete="tel">
 <label for="type">ENQUIRY TYPE</label><select id="type" name="Enquiry Type" required><option value="">Select enquiry type...</option><option>Electrical Panel Work</option><option>Motor Control</option><option>Power Distribution</option><option>Residential Wiring</option><option>Commercial Wiring</option><option>PLC &amp; Automation</option><option>IoT &amp; Smart Home</option><option>Other Enquiries</option></select>
-<label for="message">MESSAGE</label><textarea id="message" name="Project / Enquiry Details" placeholder="Describe your project or enquiry..." required></textarea>
-<button class="btn" type="submit">Send Enquiry</button></form>
+<label for="message">MESSAGE</label><textarea id="message" name="Customer Message" placeholder="Describe your project or enquiry..." required></textarea>
+<div id="voltora-form-status" role="status" aria-live="polite" style="display:none;margin:0 0 18px;padding:13px 15px;border:1px solid #1c7058;border-radius:8px;background:#0b2928;color:#a9f3d8;font-size:14px"></div>
+<button class="btn" id="voltora-submit-button" type="submit">Send Enquiry</button></form>
 <script>
 (function () {
   const form = document.getElementById('voltora-contact-form');
   if (!form) return;
-  form.addEventListener('submit', function () {
+  const status = document.getElementById('voltora-form-status');
+  const button = document.getElementById('voltora-submit-button');
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault();
     const email = document.getElementById('email');
     const type = document.getElementById('type');
     const subject = document.getElementById('voltora-email-subject');
     const replyTo = document.getElementById('voltora-reply-to');
     if (email && replyTo) replyTo.value = email.value.trim();
-    if (type && subject) subject.value = 'New enquiry | ' + (type.value || 'General') + ' | VOLTORA';
+    if (type && subject) subject.value = 'New Customer Enquiry | ' + (type.value || 'General') + ' | VOLTORA';
+
+    status.style.display = 'block';
+    status.style.borderColor = '#29405f';
+    status.style.background = '#101a30';
+    status.style.color = '#b9c9e2';
+    status.textContent = 'Sending your enquiry...';
+    button.disabled = true;
+    button.style.opacity = '0.65';
+    button.textContent = 'Sending...';
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      const result = await response.json();
+      if (!response.ok || result.success === 'false' || result.success === false) {
+        throw new Error(result.message || 'Submission failed');
+      }
+      status.style.borderColor = '#1c7058';
+      status.style.background = '#0b2928';
+      status.style.color = '#a9f3d8';
+      status.textContent = '✓ Message sent successfully! Thank you for contacting VOLTORA. Your enquiry has been received. We will get back to you shortly.';
+      form.reset();
+    } catch (error) {
+      status.style.borderColor = '#8a5730';
+      status.style.background = '#302214';
+      status.style.color = '#ffd49a';
+      status.textContent = 'We could not send your enquiry right now. Please check your internet connection and try again, or email voltoraofficial11@gmail.com.';
+    } finally {
+      button.disabled = false;
+      button.style.opacity = '1';
+      button.textContent = 'Send Enquiry';
+    }
   });
 })();
 </script></div></div></section>
