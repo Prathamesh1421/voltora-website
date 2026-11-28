@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 58" role="img" aria-label="VOLTORA">
+  <g fill="#f5f7ff">
+    <path d="M27 5 5 5 25 51 38 51 48 30 38 30 31 43 18 14 27 14 33 27 44 27Z"/>
+    <path d="M40 5 58 5 43 37 33 37Z" opacity=".95"/>
+    <path d="M68 14h9v27h-9zM82 14h9v27h-9zM96 14h9v27h-9zM110 14h9v27h-9z" opacity="0"/>
+    <text x="70" y="40" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="700" letter-spacing="5">VOLTORA</text>
+  </g>
+</svg>
